@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to voice</title>
+    <link rel="stylesheet" href="voice.css">
+    <script src="https://kit.fontawesome.com/8e141485d2.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="head">
+            <h2>TEXT TO VOICE <span> CONVERTER</span></h2>
+            <p>Write any word and get the voice</p>
+        </div>
+        <div class="mid">
+            <textarea placeholder="Write your word"></textarea>
+        </div>
+        <div class="foot">
+            <select>
+            </select>
+            <button><i class="fa-solid fa-play"></i>Play voice</button>
+        </div>
+    </div>
+
+
+     
+
+
+    <script>
+
+        
+        const button = document.querySelector("button")
+        const textarea = document.querySelector("textarea")
+
+        //text to voice
+        let voiceSelect = document.querySelector("select")
+        
+        let mytext = new SpeechSynthesisUtterance()
+        let voices = []
+
+        
+        const updatedVoices = () => {
+          voices = window.speechSynthesis.getVoices()
+          voiceSelect.innerHTML = ""
+
+          voices.forEach((voice) => {
+              const opt = document.createElement("option")
+              const optnode = document.createTextNode(voice.name)
+              opt.appendChild(optnode)
+              voiceSelect.appendChild(opt)
+ 
+        })
+        }
+        window.speechSynthesis.onvoiceschanged =  updatedVoices
+    
+        voiceSelect.addEventListener("change", () => {
+            const selectedVoice = voices.find((voice) => voice.name === voiceSelect.value)
+            mytext.voice = selectedVoice
+            })
+
+        button.addEventListener("click", () => {
+            mytext.text = textarea.value
+            window.speechSynthesis.speak(mytext)
+        })
+
+       
+     
+    </script>
+
+
+</body>
+</html>
